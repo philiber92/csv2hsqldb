@@ -1,11 +1,14 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FilenameFilter;
 
 
 public class FileOperation {
 	
 	private String _directory;
-	private File f;
+	private File _f;
 	
 	/**
 	 * Constructor
@@ -14,7 +17,7 @@ public class FileOperation {
 	 */
 	public FileOperation (String directory) {
 		_directory = directory;
-		f = new File(_directory);
+		_f = new File(_directory);
 	}
 	
 	/**
@@ -22,13 +25,22 @@ public class FileOperation {
 	 * @return an array of filenames or null if an error occurs
 	 */
 	public File[] getSqlFiles() {
-		return f.listFiles(new FilenameFilter() {
+		return _f.listFiles(new FilenameFilter() {
 			
 			@Override
 			public boolean accept(File dir, String name) {
-				return name.endsWith(".csv");
+				return name.endsWith(".sql");
 			}
 		});
+	}
+	
+	/**
+	 * returns BufferedReader instance of current file
+	 * @return BufferedReader instance
+	 * @throws FileNotFoundException
+	 */
+	public BufferedReader openFile() throws FileNotFoundException {
+		return new BufferedReader(new FileReader(getSqlFiles()[0].toString()));
 	}
 
 }
